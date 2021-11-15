@@ -28,24 +28,14 @@ public class TreeSet<T> extends AbstractSet<T> {
 	}
 
 	private class TreeSetIterator<T> implements Iterator<T> {
-		private Node<T> current;
-
-		public TreeSetIterator() {
-			if(root ==null)
-			{
-				System.out.println("The Tree set is empty");
-				return;
-			}
-			this.current = getMostLeftNode((Node<T>) root);
-		}
-
+		private Node<T> current = getMostLeftNode((Node<T>) root);
+		private Node<T> mostRightNode = getMostRightNode();
 		// TODO
 		// Done!
 		@Override
 		public boolean hasNext() {			 
 			return current!= null ;
 		}
-		
 		// TODO
 		// Done!
 		@Override
@@ -54,7 +44,6 @@ public class TreeSet<T> extends AbstractSet<T> {
 			current = current.right != null ? 
 					getMostLeftNode(current.right) : 
 					getFirstGreaterParent(current);
-			
 			return res;
 		}
 		
@@ -67,14 +56,21 @@ public class TreeSet<T> extends AbstractSet<T> {
 		}
 
 		private Node<T> getFirstGreaterParent(Node<T> node) {
-			Node<T> curNode = node;			
-			while(node.parent.right==curNode && node.parent!=null)
-			{
+			if(mostRightNode == node){
+				return null;
+			}
+			Node<T> curNode = node;	
+			while(curNode.parent.right==node){
 				curNode = curNode.parent;
 			}
-			
-			return (node.right==null&& node.parent.right==node)?
-					null: curNode.parent;
+			return  curNode.parent;
+		}
+		private Node<T> getMostRightNode() {
+			Node<T> curNode = (Node<T>) root;
+			while(curNode.right!=null){
+				curNode=curNode.right;
+			}
+			return curNode;
 		}
 	}
 
