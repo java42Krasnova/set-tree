@@ -30,23 +30,23 @@ public class TreeSet<T> extends AbstractSet<T> {
 	private class TreeSetIterator<T> implements Iterator<T> {
 		private Node<T> current = getMostLeftNode((Node<T>) root);
 		private Node<T> mostRightNode = getMostRightNode();
+
 		// TODO
 		// Done!
 		@Override
-		public boolean hasNext() {			 
-			return current!= null ;
+		public boolean hasNext() {
+			return current != null;
 		}
+
 		// TODO
 		// Done!
 		@Override
 		public T next() {
 			T res = current.obj;
-			current = current.right != null ? 
-					getMostLeftNode(current.right) : 
-					getFirstGreaterParent(current);
+			current = current.right != null ? getMostLeftNode(current.right) : getFirstGreaterParent(current);
 			return res;
 		}
-		
+
 		private Node<T> getMostLeftNode(Node<T> node) {
 			Node<T> curNode = node;
 			while (curNode.left != null) {
@@ -56,19 +56,22 @@ public class TreeSet<T> extends AbstractSet<T> {
 		}
 
 		private Node<T> getFirstGreaterParent(Node<T> node) {
-			if(mostRightNode == node){
+			if (mostRightNode == node) {
 				return null;
 			}
-			Node<T> curNode = node;	
-			while(curNode.parent.right==node){
-				curNode = curNode.parent;
+			Node<T> curNode = node;
+			if (curNode.parent != null) {
+				while (curNode.parent.right == node) {
+					curNode = curNode.parent;
+				}
 			}
-			return  curNode.parent;
+			return curNode.parent;
 		}
+
 		private Node<T> getMostRightNode() {
 			Node<T> curNode = (Node<T>) root;
-			while(curNode.right!=null){
-				curNode=curNode.right;
+			while (curNode.right != null) {
+				curNode = curNode.right;
 			}
 			return curNode;
 		}
@@ -123,8 +126,8 @@ public class TreeSet<T> extends AbstractSet<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		//TODO 
-		//Done!
+		// TODO
+		// Done!
 		return new TreeSetIterator<T>();
 	}
 
