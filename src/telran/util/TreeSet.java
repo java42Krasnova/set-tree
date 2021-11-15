@@ -43,7 +43,9 @@ public class TreeSet<T> extends AbstractSet<T> {
 		@Override
 		public T next() {
 			T res = current.obj;
-			current = current.right != null ? getMostLeftNode(current.right) : getFirstGreaterParent(current);
+			current = current.right != null 
+					? getMostLeftNode(current.right) 
+						: getFirstGreaterParent(current);
 			return res;
 		}
 
@@ -60,11 +62,12 @@ public class TreeSet<T> extends AbstractSet<T> {
 				return null;
 			}
 			Node<T> curNode = node;
-			if (curNode.parent != null) {
+			if (node.parent != null) {
 				while (curNode.parent.right == node) {
 					curNode = curNode.parent;
 				}
 			}
+			
 			return curNode.parent;
 		}
 
