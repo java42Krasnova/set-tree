@@ -62,12 +62,9 @@ public class TreeSet<T> extends AbstractSet<T> {
 				return null;
 			}
 			Node<T> curNode = node;
-			if (node.parent != null) {
-				while (curNode.parent.right == node) {
+				while (curNode.parent.right == node && curNode.parent != null) {
 					curNode = curNode.parent;
 				}
-			}
-			
 			return curNode.parent;
 		}
 
