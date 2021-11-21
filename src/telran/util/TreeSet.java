@@ -3,6 +3,8 @@ package telran.util;
 import java.util.Comparator;
 import java.util.Iterator;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.ParagraphAction;
+
 public class TreeSet<T> extends AbstractSet<T> {
 	private static class Node<T> {
 		T obj;
@@ -61,9 +63,9 @@ public class TreeSet<T> extends AbstractSet<T> {
 		
 		@Override
 		public void remove() {
-			// TODO
-			TreeSet.this.remove(prevNode.obj);
-			
+			// TODO	
+			removeNode(prevNode);
+
 		}
 	}
 
@@ -124,9 +126,7 @@ public class TreeSet<T> extends AbstractSet<T> {
 	private void removeNode(Node<T> removedNode) {
 		// TODO update a method by applying another algorithm
 		//Done!
-		if (removedNode == root) {
-			removeRoot();
-		} else if (isJunction(removedNode)) {
+		 if (isJunction(removedNode)) {
 			removeJunction(removedNode);
 		} else {
 			removeNonJunction(removedNode);
@@ -137,55 +137,62 @@ public class TreeSet<T> extends AbstractSet<T> {
 	private boolean isJunction(Node<T> removedNode) {
 		return removedNode.left != null && removedNode.right != null;
 	}
-
 	private void removeJunction(Node<T> removedNode) {
-		Node<T> nodeForReplace = getMostLeftFrom(removedNode.right);
-		removedNode.obj = nodeForReplace.obj;
-		removeNonJunction(nodeForReplace);
+		Node<T> substitution = getMostLeftFrom(removedNode.right);
+		
+		Node<T> parent = removedNode.parent;
+		if(size==1)
+		{
+			root = null;
+		}
+		if(removedNode!=root)
+		{	
+		 if (parent.right==removedNode) {
+			 substitution = getMostLeftFrom(removedNode);
+			 parent.right=substitution;
+			 if(substitution.parent.left==substitution)
+			 {
+				 removedNode.left=null;
+			 }
+			
+		}  else {
+			parent.left=substitution;
+		}
+		}  else {
+			root = substitution;
+			root.parent = null;
+			substitution.left=removedNode.left;
+			//substitution.right=removedNode.right;
+			//substitution.parent.left=null;
+			return;
+		}
+		substitution.left=removedNode.left;
+		substitution.right=removedNode.right;
+		if(substitution.left!=null) {
+		substitution.left.parent=substitution;}
+		substitution.parent=parent;
+		
 	}
 
 	private void removeNonJunction(Node<T> removedNode) {
-		Node<T> parent = removedNode.parent;
-		Node<T> child ;
-		if (removedNode.left == null && removedNode.right != null) {
-			child= removedNode.right;
-			parent.right=child;
-			child.parent=parent;
-		} else if (removedNode.left != null && removedNode.right == null) {
-			child = removedNode.left;
-			parent.left=child;
-			child.parent=parent;
-		} else{
-			removeLeaf(removedNode);
-			}	
+		if(removedNode==root) {
+			 root =removedNode.right == null ? removedNode.left:removedNode.right;
+		removedNode.parent=null;
 		}
-	
-	private void removeLeaf(Node<T> removedNode) {
-		if (removedNode.parent.right == removedNode) {
-			removedNode.parent.right = null;
-		} else if (removedNode.parent.left == removedNode) {
-			removedNode.parent.left = null;
+		else {
+			
+			Node<T> parent = removedNode.parent;
+			Node<T> child = removedNode.right == null ? removedNode.left:removedNode.right;
+				if(parent.left==removedNode) {
+					parent.left=child;
+				}else {
+					parent.right=child;
+				}
+				if(child!=null) {
+					child.parent=parent;
+				}
 		}
-	}
-
-	private void removeRoot() {
-		// TODO update a method by applying another algorithm
-		if (size == 1) {
-			root = null;
 		}
-		if(isJunction(root)){
-			Node<T> nodeForReplace= getMostLeftFrom(root.right);
-			root.obj=nodeForReplace.obj;
-			removeNonJunction(nodeForReplace);
-		}	else if(root.left == null && root.right != null){
-			root.right.parent=null;
-			root=root.right;
-		} else {
-			root.left.parent=null;
-			root=root.left;
-		}
-	}
-	
 
 	private Node<T> getNode(T pattern) {
 		Node<T> current = root;
