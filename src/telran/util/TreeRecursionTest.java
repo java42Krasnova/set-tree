@@ -42,43 +42,13 @@ class TreeRecursionTest {
 	}
 	
 	@Test
-	void maxBranchSumTest() throws Exception {
+	void maxBranchSumTest()   {
 		TreeSet<Integer> tree1 = getTreeForTest();
 		System.out.println("The tree from slide 38 looks like ");
 		tree1.displayTree();
 		assertEquals(36, tree1.sumOfMaxBranch());
 		
-		
-		//wrong type for arg check
-		TreeSet<String> wrongTreeForTest = new TreeSet<String>();
-		wrongTreeForTest.add("ab");
-		wrongTreeForTest.add("cd");
-		wrongTreeForTest.add("3");
-		boolean fl = false;
-		try {
-			wrongTreeForTest.sumOfMaxBranch();
-		} catch (IllegalArgumentException e) {
-			fl = true;
-		}
-		assertTrue(fl);
-		
-		//empty tree check
-		TreeSet<Integer> emptyTree = new TreeSet<>();
-		emptyTree.add(2);
-		emptyTree.clear();
-		 fl = false;
-		try {
-			emptyTree.sumOfMaxBranch();
-		} catch (Exception e) {
-			fl = true;
-		}
-		System.out.println("Case when tree is empty");
-		try {
-			emptyTree.displayTree();
-		} catch (Exception e) {
-			System.out.println(e.toString());
-		}
-		
+	
 	}
 	
 	
@@ -92,10 +62,10 @@ class TreeRecursionTest {
 	}
 
 	private int sumOfDigits(Integer num) {
-		if(num > -10 && num < 10) {
-			return num;
-		}
-		return num % 10 == 0? 1 : num % 10 + sumOfDigits(num / 10);
+	if(num<10) {
+		return num;
+	}
+		return num  == 0 ? 0 : num % 10 + sumOfDigits(num / 10);
 	}
 	
 	@Test

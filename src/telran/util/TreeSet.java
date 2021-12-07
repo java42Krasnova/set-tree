@@ -230,10 +230,8 @@ public class TreeSet<T> extends AbstractSet<T> {
 
 	}
 
-	public void displayTree() throws Exception {
-		if (root == null) {
-			throw new Exception("Your tree is empty");
-		}
+	public void displayTree()  {
+		
 		displayTree(0, root);
 	}
 
@@ -251,16 +249,11 @@ public class TreeSet<T> extends AbstractSet<T> {
 		System.out.println(rootTmp.obj.toString());
 	}
 
-	public int sumOfMaxBranch() throws Exception { // TODO done
-		if (root == null) {
-			throw new Exception("The tree is empty");
-		} else if (root.obj instanceof Integer) {
+	public int sumOfMaxBranch()  { // TODO done
+		if (root.obj instanceof Integer) {
 			return sumOfMaxBrunch(root);
-		} else {
-			throw new IllegalArgumentException("Arguments must be Integer");
 		}
-
-		// return -1;
+		 return -1;
 	}
 
 	private int sumOfMaxBrunch(Node<T> rootTmp) {
